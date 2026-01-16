@@ -1,71 +1,50 @@
-# snippet-copier README
+# Snippet Copier
 
-This is the README for your extension "snippet-copier". After writing up a brief description, we recommend including the following sections.
+A simple and elegant productivity tool for VS Code that lives in your sidebar. Snippet Copier allows you to save and quickly access frequently used text snippets—from LLM prompts and boilerplate code to git commands and configuration settings.
+
+Stop wasting time re-typing the same text. With Snippet Copier, your essential snippets are always just a click away.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Seamless Sidebar Integration**: Runs as a clean, native-looking Webview in the VS Code Activity Bar.
+- **One-Click Copying**: Click any saved snippet to instantly copy it to your clipboard.
+- **Quick Add & Edit**:
+  - Use the text area at the top to add new snippets.
+  - Hover over any item and click the **Pencil** icon to load it back for editing.
+- **Easy Deletion**: Hover over an item and click the **Trash Can** icon to remove it.
+- **Persistent Storage**: Snippets are saved directly into your VS Code settings, so they can be synced across devices with Settings Sync.
+- **Native UI**: Designed with VS Code's official colors, fonts, and icons for a consistent look and feel.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to Use
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1.  Click the **Snippet Copier** icon in the Activity Bar to open the view.
+2.  Type or paste your desired text into the **New Snippet** text area.
+3.  Click the **Add Snippet** button to save it.
+4.  To copy a snippet, simply click on it in the "Saved" list. A notification will confirm it's on your clipboard.
+5.  To edit or delete, hover over the snippet to reveal the action icons.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension stores its data in your User `settings.json` file under the following key:
 
-For example:
+- `mySnippetCopier.snippets`: An array of strings where all your saved snippets are stored.
 
-This extension contributes the following settings:
+You can view or manually edit your snippets here:
+```json
+"mySnippetCopier.snippets": [
+    "Hello World",
+    "console.log('Hello from Snippet Copier!');"
+]
+```
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Requirements
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+There are no special requirements or dependencies for this extension.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Initial release of Snippet Copier.
+- Core features: Add, edit, delete, and copy snippets from the sidebar.
+- UI styled to match the native VS Code look and feel.
