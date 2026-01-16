@@ -1,6 +1,10 @@
 {
   "name": "snippet-copier",
   "publisher": "konzjulian",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/konzjulianprivat/snippet-copier"
+  },
   "displayName": "snippet-copier",
   "description": "Copy snippets from the sidebar",
   "version": "0.0.1",
