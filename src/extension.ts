@@ -35,14 +35,16 @@ class SnippetViewProvider implements vscode.WebviewViewProvider {
                     this._addSnippet(data.value);
                     break;
                 case 'copySnippet':
-                    vscode.env.clipboard.writeText(data.value);
-                    vscode.window.showInformationMessage('Copied to clipboard!');
+                    this._copySnippet(data.index);
                     break;
                 case 'deleteSnippet':
                     this._deleteSnippet(data.index);
                     break;
                 case 'editSnippet':
                     this._updateSnippet(data.index, data.value);
+                    break;
+                case 'loadSnippet':
+                    this._loadSnippetForEdit(data.index);
                     break;
             }
         });
@@ -63,13 +65,17 @@ class SnippetViewProvider implements vscode.WebviewViewProvider {
         const trashIcon = `<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M11 2H9c0-.55-.45-1-1-1H8c-.55 0-1 .45-1 1H5c-.55 0-1 .45-1 1v2h10V3c0-.55-.45-1-1-1zM8 2h1v2H8V2zm5 5V5H3v2h1v6c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V7h1zM5 13V7h6v6H5z"/></svg>`;
 
         const snippetsHtml = snippets.map((snippet, index) => {
-            const safeSnippet = snippet.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-            
+            const safeSnippet = snippet
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, '&quot;');
+
             return `
                 <div class="snippet-item">
-                    <div class="snippet-text" onclick="copyText('${safeSnippet}')">${safeSnippet}</div>
+                    <div class="snippet-text" onclick="copyText(${index})">${safeSnippet}</div>
                     <div class="actions">
-                        <button class="icon-btn" onclick="editText(${index}, '${safeSnippet}')" title="Edit">${editIcon}</button>
+                        <button class="icon-btn" onclick="editText(${index})" title="Edit">${editIcon}</button>
                         <button class="icon-btn" onclick="deleteText(${index})" title="Delete">${trashIcon}</button>
                     </div>
                 </div>
@@ -84,6 +90,23 @@ class SnippetViewProvider implements vscode.WebviewViewProvider {
         const snippets = config.get<string[]>('snippets') || [];
         snippets.push(text);
         config.update('snippets', snippets, vscode.ConfigurationTarget.Global).then(() => this._updateHtml());
+    }
+
+    private _copySnippet(index: number) {
+        const config = vscode.workspace.getConfiguration('mySnippetCopier');
+        const snippets = config.get<string[]>('snippets') || [];
+        if (snippets[index]) {
+            vscode.env.clipboard.writeText(snippets[index]);
+            vscode.window.showInformationMessage('Copied to clipboard!');
+        }
+    }
+
+    private _loadSnippetForEdit(index: number) {
+        const config = vscode.workspace.getConfiguration('mySnippetCopier');
+        const snippets = config.get<string[]>('snippets') || [];
+        if (snippets[index] && this._view) {
+            this._view.webview.postMessage({ type: 'loadSnippet', text: snippets[index], index: index });
+        }
     }
 
     private _deleteSnippet(index: number) {
@@ -234,20 +257,27 @@ class SnippetViewProvider implements vscode.WebviewViewProvider {
                     input.value = '';
                 }
 
-                function copyText(text) {
-                    vscode.postMessage({ type: 'copySnippet', value: text });
+                function copyText(index) {
+                    vscode.postMessage({ type: 'copySnippet', index: index });
                 }
 
                 function deleteText(index) {
                     vscode.postMessage({ type: 'deleteSnippet', index: index });
                 }
 
-                function editText(index, text) {
-                    input.value = text;
-                    editingIndex = index;
-                    btn.innerText = "Update Snippet";
-                    input.focus();
+                function editText(index) {
+                    vscode.postMessage({ type: 'loadSnippet', index: index });
                 }
+
+                window.addEventListener('message', event => {
+                    const message = event.data;
+                    if (message.type === 'loadSnippet') {
+                        input.value = message.text;
+                        editingIndex = message.index;
+                        btn.innerText = "Update Snippet";
+                        input.focus();
+                    }
+                });
             </script>
         </body>
         </html>`;

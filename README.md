@@ -8,11 +8,13 @@ Stop wasting time re-typing the same text. With Snippet Copier, your essential s
 
 - **Seamless Sidebar Integration**: Runs as a clean, native-looking Webview in the VS Code Activity Bar.
 - **One-Click Copying**: Click any saved snippet to instantly copy it to your clipboard.
+- **Multi-Line Snippet Support**: Save and manage snippets of any size, including complex multi-line text with special characters.
 - **Quick Add & Edit**:
   - Use the text area at the top to add new snippets.
-  - Hover over any item and click the **Pencil** icon to load it back for editing.
+  - Hover over any item and click the **Pencil** icon to load it back for editing with full formatting preserved.
 - **Easy Deletion**: Hover over an item and click the **Trash Can** icon to remove it.
 - **Persistent Storage**: Snippets are saved directly into your VS Code settings, so they can be synced across devices with Settings Sync.
+- **Clean, Compact UI**: Snippets display as single lines with ellipsis for a tidy sidebar, while preserving full content.
 - **Native UI**: Designed with VS Code's official colors, fonts, and icons for a consistent look and feel.
 
 ## How to Use
@@ -42,6 +44,13 @@ You can view or manually edit your snippets here:
 There are no special requirements or dependencies for this extension.
 
 ## Release Notes
+
+### 1.1.0
+
+- **Enhanced Multi-Line Support**: Fully redesigned snippet handling to properly save, display, and copy multi-line snippets with special characters.
+- **Improved Edit Functionality**: Fixed editing feature to preserve all formatting including newlines and special characters.
+- **Cleaner UI**: Optimized snippet display to show only one line per item for a more compact sidebar.
+- **Robust Text Handling**: Complete rewrite of text escaping logic to handle any type of content reliably.
 
 ### 1.0.0
 
